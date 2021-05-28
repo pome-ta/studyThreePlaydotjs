@@ -33,8 +33,9 @@ function init() {
   
   // 毎フレーム時に実行されるループイベント
   function tick() {
-    box.rotation.y += 0.01;
-    box.rotation.z += 0.02;
+    box.rotation.x += 0.02;
+    box.rotation.y += 0.05;
+    box.rotation.z += 0.06;
     // レンダリング
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
