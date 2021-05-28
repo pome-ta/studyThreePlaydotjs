@@ -1,7 +1,7 @@
 import * as THREE from 'https://unpkg.com/three/build/three.module.js';
 
 
-
+// ページの読み込みを待つ
 window.addEventListener('load', init);
 
 function init() {
