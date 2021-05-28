@@ -1,4 +1,4 @@
-import * as THREE from "https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.module.js";
+import * as THREE from 'https://unpkg.com/three/build/three.module.js';
 
 
 const width = document.querySelector('body').clientWidth;
