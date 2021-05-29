@@ -31,7 +31,9 @@ function init() {
   // マテリアルを作成
   const material = new THREE.MeshStandardMaterial({
     color: 0xff0000,
-    side: THREE.DoubleSide,
+    side: THREE.FrontSide,
+    roughness: 0.0,
+    //wireframe: true
   });
   
   // 平行光源を作成
@@ -64,10 +66,16 @@ function init() {
     mesh.position.x = 400 * Math.sin((index / geometryList.length) * Math.PI * 2);
     mesh.position.z = 400 * Math.cos((index / geometryList.length) * Math.PI * 2);
   });
+  
 
   tick();
   // 毎フレーム時に実行されるループイベント
   function tick() {
+    for (const obj of container.children) {
+      obj.rotation.x -= 0.01;
+      obj.rotation.y += 0.02;
+      obj.rotation.z += 0.01;
+    }
     container.rotation.y += 0.01;
     // レンダリング
     renderer.render(scene, camera);
