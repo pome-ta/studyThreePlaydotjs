@@ -1,7 +1,9 @@
 # studyThreePlaydotjs
 
 
+## やば？
 
+cdn パケ死ぬ？
 
 ## 参照
 
