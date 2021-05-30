@@ -22,6 +22,7 @@ function init() {
 
   // カメラを作成
   const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e4);
+  //camera.position.set(0, 512, +1024);
   
   // 平行光源を作成
   const directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -62,7 +63,7 @@ function init() {
   
     // マテリアルを作成
     const material = new THREE.PointsMaterial({
-      size: 8,
+      size: 2,
       color: 0xffffff,
       blending: THREE.AdditiveBlending,
     });
@@ -79,8 +80,11 @@ function init() {
     rot += 0.5; // 毎フレーム角度を0.5度ずつ加算
     const radian = (rot * Math.PI) / 180;
     // 角度に応じてカメラの位置を設定
-    camera.position.x = 1000 * Math.sin(radian);
-    camera.position.z = 1000 * Math.cos(radian);
+    camera.position.x = 1024 * Math.sin(radian);
+    camera.position.z = 1024 * Math.cos(radian);
+    //earthMesh.rotation.y -= 0.01;
+    
+    
     
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     // レンダリング
