@@ -1,9 +1,9 @@
 // 最新version でやる気持ち
 import * as THREE from 'https://cdn.skypack.dev/three';
 import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
-//import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
+import { TDSLoader } from 'https://cdn.skypack.dev/three/examples/jsm/loaders/TDSLoader.js';
 
-
+//OBJLoader.js
 
 window.addEventListener('load', init);
 
@@ -26,53 +26,34 @@ function init() {
 
   // カメラを作成
   const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e4);
-  camera.position.set(0, 0, +2048);
+  camera.position.set(0, 0, +5);
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
   
   // カメラコントローラーを作成
   const controls = new OrbitControls(camera, canvasElement);
   // 滑らかにカメラコントローラーを制御する
   controls.enableDamping = true;
   controls.dampingFactor = 0.2;
-
-  // 形状とマテリアルからメッシュを作成します
-  const mesh = new THREE.Mesh(new THREE.BoxGeometry(300, 300, 300), new THREE.MeshNormalMaterial());
-  scene.add(mesh);
   
   
-  // 星屑を作成 (カメラの動きをわかりやすくするため)
-  createStarField();
-
-  /** 星屑を作成 */
-  function createStarField() {
-    // 頂点情報を作成
-    const vertices = [];
-    for (let i = 0; i < 1000; i++) {
-      const x = 3000 * (Math.random() - 0.5);
-      const y = 3000 * (Math.random() - 0.5);
-      const z = 3000 * (Math.random() - 0.5);
-      vertices.push(x, y, z);
-    }
-    
-    // 形状データを作成
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    
+  // 平行光源を作成
+  const directionalLight = new THREE.DirectionalLight(0xffffff);
+  directionalLight.position.set(1, 1, 1);
+  scene.add(directionalLight);
+  // 環境光を追加
+  const ambientLight = new THREE.AmbientLight(0xffffff);
+  scene.add(ambientLight);
   
-    // マテリアルを作成
-    const material = new THREE.PointsMaterial({
-      size: 4,
-      color: 0xffffff,
-      blending: THREE.AdditiveBlending,
-    });
-  
-    // 物体を作成
-    const mesh = new THREE.Points(geometry, material);
-    scene.add(mesh);
-  }
-
-  
-  
-
+  // .obj 呼び出し
+  // 3DS形式のモデルデータを読み込む
+  const loader = new TDSLoader();
+  // テクスチャーのパスを指定
+  loader.setResourcePath('../models/3ds/portalgun/textures/');
+  // 3dsファイルのパスを指定
+  loader.load('../models/3ds/portalgun/portalgun.3ds', (object) => {
+    // 読み込み後に3D空間に追加
+    scene.add(object);
+  });
   
   tick();
   // 毎フレーム時に実行されるループイベント
