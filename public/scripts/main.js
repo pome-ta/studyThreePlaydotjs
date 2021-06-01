@@ -7,16 +7,17 @@ const {tapStart, tapMove, tapEnd} = {
   tapMove: typeof document.ontouchmove !== 'undefined' ? 'touchmove' : 'mousemove',
   tapEnd: typeof document.ontouchend !== 'undefined' ? 'touchend' : 'mouseup',
 }
-// カメラ位置リセット用
+// xxx: 読み込み時に作るあとで
 const btnEle = document.querySelector('#btn');
 
 
 window.addEventListener('load', init);
 
+
 function init() {
   // 画面サイズ
   const width = document.querySelector('body').clientWidth;
-  const height = width * 1.5;
+  const height = width * 0.64;
   let rot = 0;
   
   // レンダラ作成
@@ -39,6 +40,7 @@ function init() {
   // ポジションリセット
   btnEle.addEventListener(tapStart, () => {
     camera.position.set(0, 0, 128);
+    //console.log(canvasElement);
   });
   
   // カメラコントローラーを作成
