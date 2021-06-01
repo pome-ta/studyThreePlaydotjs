@@ -3,7 +3,8 @@ import * as THREE from 'https://cdn.skypack.dev/three';
 import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
 import { TDSLoader } from 'https://cdn.skypack.dev/three/examples/jsm/loaders/TDSLoader.js';
 
-//OBJLoader.js
+import { ColladaLoader } from 'https://cdn.skypack.dev/three/examples/jsm/loaders/ColladaLoader.js';
+
 
 window.addEventListener('load', init);
 
@@ -26,7 +27,7 @@ function init() {
 
   // カメラを作成
   const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e4);
-  camera.position.set(0, 0, +5);
+  camera.position.set(0, 8, 24);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   
   // カメラコントローラーを作成
@@ -44,15 +45,14 @@ function init() {
   const ambientLight = new THREE.AmbientLight(0xffffff);
   scene.add(ambientLight);
   
-  // .obj 呼び出し
+  // .dae 呼び出し
   // 3DS形式のモデルデータを読み込む
-  const loader = new TDSLoader();
-  // テクスチャーのパスを指定
-  loader.setResourcePath('../models/3ds/portalgun/textures/');
+  const loader = new ColladaLoader();
   // 3dsファイルのパスを指定
-  loader.load('../models/3ds/portalgun/portalgun.3ds', (object) => {
+  loader.load('../models/collada/elf/elf.dae', (collada) => {
     // 読み込み後に3D空間に追加
-    scene.add(object);
+    const model = collada.scene;
+    scene.add(model);
   });
   
   tick();
