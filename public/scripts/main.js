@@ -2,8 +2,13 @@
 import * as THREE from 'https://cdn.skypack.dev/three';
 import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
 
-
-
+const {tapStart, tapMove, tapEnd} = {
+  tapStart: typeof document.ontouchstart !== 'undefined' ? 'touchstart' : 'mousedown',
+  tapMove: typeof document.ontouchmove !== 'undefined' ? 'touchmove' : 'mousemove',
+  tapEnd: typeof document.ontouchend !== 'undefined' ? 'touchend' : 'mouseup',
+}
+// カメラ位置リセット用
+const btnEle = document.querySelector('#btn');
 
 
 window.addEventListener('load', init);
@@ -29,8 +34,12 @@ function init() {
 
   // カメラを作成
   const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e4);
-  camera.position.set(0, 0, 1024);
+  camera.position.set(0, 0, 128);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
+  // ポジションリセット
+  btnEle.addEventListener(tapStart, () => {
+    camera.position.set(0, 0, 128);
+  });
   
   // カメラコントローラーを作成
   const controls = new OrbitControls(camera, canvasElement);
@@ -39,7 +48,14 @@ function init() {
   controls.dampingFactor = 0.2;
   
   
-
+  const geometry = new THREE.PlaneGeometry(64, 64, 16, 16);
+  const material = new THREE.MeshNormalMaterial();
+  
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
+  
+  
+  
   
   // 毎フレーム時に実行されるループイベント
   tick();
