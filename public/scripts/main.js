@@ -55,6 +55,18 @@ function init() {
     scene.add(model);
   });
   
+  
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(64, 64), 
+    new THREE.MeshStandardMaterial(
+      {
+        color: 0xff0000,
+        side: THREE.DoubleSide,
+      })
+  );
+  ground.rotation.x = Math.PI / -2;
+  scene.add(ground);
+  
   tick();
   // 毎フレーム時に実行されるループイベント
   function tick() {
