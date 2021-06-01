@@ -42,10 +42,7 @@ void main(){
 
 
 let fragmentSource = `
-//精度の指定
 precision mediump float;
-
-//timeを取得
 uniform float time;
 
 //vUvを取得
@@ -54,16 +51,9 @@ varying vec2 vUv;
 void main(){
 
   //uv座標系で、オブジェクトの中心に原点を設定
-  vec2 p = (vUv * 2.0 - 1.0);
-
-  //ドットアニメーション
-  p.x -= time * 0.00075;
-  p *= 8.0;
-  p = mod(p,3.0)-1.0;
-  float l = length(p);
-  l = step(0.0,1.0-l);
+  vec2 p = vUv;//(vUv * 2.0 - 1.0);
  
-  gl_FragColor = vec4(l,l,0.0,1.0);
+  gl_FragColor = vec4(p.x,p.y,abs(sin(time* 0.01)),1.0);
 }
 `;
 
@@ -109,7 +99,7 @@ function init() {
   controls.dampingFactor = 0.2;
   
   
-  const geometry = new THREE.PlaneGeometry(64, 64, 1, 1);
+  const geometry = new THREE.PlaneGeometry(64, 64, 4, 4);
   //timeを設定
   const uniforms = {
     time:{type:'f',value:0.0}
