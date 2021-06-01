@@ -33,14 +33,16 @@ uniform mat4 modelViewMatrix;
 varying vec2 vUv;
 
 void main(){
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 
   //フラグメントシェーダにuvを転送
   vUv = uv;
 }
 `;
 
-
+let fragmentSource = document.querySelector('#ed').value;
+//console.log(fragmentSource);
+/*
 let fragmentSource = `
 precision mediump float;
 uniform float time;
@@ -53,11 +55,11 @@ void main(){
   //uv座標系で、オブジェクトの中心に原点を設定
   vec2 p = vUv;//(vUv * 2.0 - 1.0);
  
-  gl_FragColor = vec4(p.x,p.y,abs(sin(time* 0.01)),1.0);
+  gl_FragColor = vec4(p.x, p.y, abs(sin(time* 0.01)), 1.0);
 }
 `;
 
-
+*/
 
 
 
@@ -66,7 +68,7 @@ void main(){
 function init() {
   // 画面サイズ
   const width = document.querySelector('body').clientWidth;
-  const height = width * 0.64;
+  const height = width * 0.32;
   let rot = 0;
   
   // レンダラ作成
@@ -87,10 +89,7 @@ function init() {
   camera.position.set(0, 0, 128);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   // ポジションリセット
-  btnEle.addEventListener(tapStart, () => {
-    camera.position.set(0, 0, 128);
-    //console.log(canvasElement);
-  });
+  
   
   // カメラコントローラーを作成
   const controls = new OrbitControls(camera, canvasElement);
@@ -99,10 +98,10 @@ function init() {
   controls.dampingFactor = 0.2;
   
   
-  const geometry = new THREE.PlaneGeometry(64, 64, 4, 4);
+  const geometry = new THREE.PlaneGeometry(128, 64, 1, 1);
   //timeを設定
   const uniforms = {
-    time:{type:'f',value:0.0}
+    time: { type:'f', value:0.0 }
   };
   
   
@@ -114,10 +113,22 @@ function init() {
     //wireframe: true
   });
   
+  
+  
   //const material = new THREE.MeshNormalMaterial();
   
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
+  //console.log({mesh});
+  //console.log(mesh.material.fragmentShader);
+  
+  
+  btnEle.addEventListener(tapStart, () => {
+    camera.position.set(0, 0, 128);
+    material.fragmentShader = document.querySelector('#ed').value;
+    mesh.material = material;
+    material.needsUpdate = true;
+  });
   
   
   
@@ -127,6 +138,15 @@ function init() {
   tick();
   function tick() {
     controls.update();
+    
+    /*
+    if (mesh.material.fragmentShader === document.querySelector('#ed').value) {
+      console.log('きてる');
+    } else {
+      mesh.material.fragmentShader = document.querySelector('#ed').value;
+      material.needsUpdate = true;
+    }*/
+    
     // レンダリング
     time ++;
     mesh.material.uniforms.time.value = time;

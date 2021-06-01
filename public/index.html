@@ -17,6 +17,22 @@
 <div class="wrap">
   <canvas id="myCanvas"></canvas>
   <div id="btn"></div>
+<textarea id="ed" rows="24">
+precision mediump float;
+uniform float time;
+
+//vUvを取得
+varying vec2 vUv;
+
+void main(){
+
+  //uv座標系で、オブジェクトの中心に原点を設定
+  vec2 p = vUv;//(vUv * 2.0 - 1.0);
+ 
+  gl_FragColor = vec4(p.x, p.y, abs(sin(time* 0.01)), 1.0);
+}
+</textarea>
 </div>
+
 </body>
 </html>

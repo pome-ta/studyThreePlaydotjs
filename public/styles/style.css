@@ -23,7 +23,7 @@ body {
 #btn {
   background-color: cornflowerblue;
   border-radius: 8rem;
-  height: 4rem;
+  height: 2rem;
   width: 100%;
   margin: 1rem 0;
   
@@ -31,4 +31,10 @@ body {
 
 #btn:active {
   background-color: teal;
+}
+
+
+#ed {
+  width: 100%;
+  font-family: monospace;
 }
