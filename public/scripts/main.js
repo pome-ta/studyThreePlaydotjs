@@ -17,11 +17,14 @@ window.addEventListener('load', init);
 
 let vertexSource = `
 precision mediump float;
-uniform mat4 modelViewMatrix;
-uniform mat4 projectionMatrix;
+
 attribute vec3 position;
 attribute vec3 color;
 attribute vec3 displacement;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
 varying vec3 vColor;
  
 void main(){
@@ -106,8 +109,8 @@ function init() {
     time: { type:'f', value: 0.0 }
   };
   const positions = new Float32Array([
-     2.5,  0.0,  0.0,
-     0.0,  5.0,  0.0,
+     0.0,  1.0,  0.0,
+     1.0,  0.0,  0.0,
     -2.5,  0.0,  0.0,
   ]);
     const colors = new Float32Array([
