@@ -2,6 +2,7 @@
 import * as THREE from 'https://cdn.skypack.dev/three';
 import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/controls/OrbitControls.js';
 
+// モバイルとpc の差異
 const {tapStart, tapMove, tapEnd} = {
   tapStart: typeof document.ontouchstart !== 'undefined' ? 'touchstart' : 'mousedown',
   tapMove: typeof document.ontouchmove !== 'undefined' ? 'touchmove' : 'mousemove',
@@ -15,28 +16,18 @@ window.addEventListener('load', init);
 
 
 let vertexSource = `
-//精度の指定を追加
 precision mediump float;
-
-//positionの宣言
-attribute vec3 position;
- 
-//uvの宣言
-attribute vec2 uv;
- 
-//projectionMatrixの宣言
-uniform mat4 projectionMatrix;
- 
-//modelViewMatrixの宣言
 uniform mat4 modelViewMatrix;
-
-varying vec2 vUv;
-
+uniform mat4 projectionMatrix;
+attribute vec3 position;
+attribute vec3 color;
+attribute vec3 displacement;
+varying vec3 vColor;
+ 
 void main(){
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-
-  //フラグメントシェーダにuvを転送
-  vUv = uv;
+  vColor = color;
+  vec3 vv = position + displacement;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(vv,1.0);
 }
 `;
 
@@ -68,7 +59,7 @@ void main(){
 function init() {
   // 画面サイズ
   const width = document.querySelector('body').clientWidth;
-  const height = width * 0.32;
+  const height = width * 0.8;
   let rot = 0;
   
   // レンダラ作成
@@ -83,12 +74,19 @@ function init() {
   // シーンを作成
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x444444);
-
+  
+  // 座標軸を表示
+  const axes = new THREE.AxisHelper(8);
+  scene.add(axes);
+  
+  
   // カメラを作成
-  const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e4);
-  camera.position.set(0, 0, 128);
+  const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e3);
+  //cam_set(camera);
+  camera.position.set(0, 0, 16);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   // ポジションリセット
+  //console.log(camera);
   
   
   // カメラコントローラーを作成
@@ -98,13 +96,49 @@ function init() {
   controls.dampingFactor = 0.2;
   
   
-  const geometry = new THREE.PlaneGeometry(128, 64, 1, 1);
+  const gridHelper = new THREE.GridHelper(128, 128);
+  scene.add(gridHelper);
+  //renderer.outputEncoding = THREE.sRGBEncoding;
+  
+  
+  //const geometry = new THREE.PlaneGeometry(128, 64, 1, 1);
+  
   //timeを設定
   const uniforms = {
-    time: { type:'f', value:0.0 }
+    time: { type:'f', value: 0.0 }
   };
+  const positions = new Float32Array([
+     2.5,  0.0,  0.0,
+     0.0,  5.0,  0.0,
+    -2.5,  0.0,  0.0,
+  ]);
+    const colors = new Float32Array([
+    1.0,0.0,0.0,
+    0.0,0.0,1.0,
+    0.0,1.0,0.0,
+  ]);
+  const displacement = new Float32Array(3 * 3);
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute('displacement', new THREE.BufferAttribute(displacement, 3));
   
   
+  const material = new THREE.RawShaderMaterial({
+    vertexShader:vertexSource,
+    fragmentShader:fragmentSource,
+    uniforms:uniforms,
+    side:THREE.DoubleSide,
+  });
+  const triangle = new THREE.Mesh(geometry, material);
+  scene.add(triangle);
+    
+    
+    
+ 
+  
+  
+  /*
   const material = new THREE.RawShaderMaterial({
     vertexShader: vertexSource,
     fragmentShader: fragmentSource,
@@ -113,20 +147,18 @@ function init() {
     //wireframe: true
   });
   
-  
-  
   //const material = new THREE.MeshNormalMaterial();
   
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
-  //console.log({mesh});
-  //console.log(mesh.material.fragmentShader);
+  */
   
   
   btnEle.addEventListener(tapStart, () => {
-    camera.position.set(0, 0, 128);
+    camera.position.set(0, 0, 16);
+    //cam_set(camera);
     material.fragmentShader = document.querySelector('#ed').value;
-    mesh.material = material;
+    triangle.material = material;
     material.needsUpdate = true;
   });
   
@@ -149,7 +181,7 @@ function init() {
     
     // レンダリング
     time ++;
-    mesh.material.uniforms.time.value = time;
+    uniforms.time.value = time;
     renderer.render(scene, camera);
     requestAnimationFrame(tick);
   }

@@ -18,18 +18,17 @@
   <canvas id="myCanvas"></canvas>
   <div id="btn"></div>
 <textarea id="ed" rows="24">
-precision mediump float;
+#ifdef GL_ES
+precision highp float;
+#endif
 uniform float time;
-
-//vUvを取得
-varying vec2 vUv;
-
-void main(){
-
-  //uv座標系で、オブジェクトの中心に原点を設定
-  vec2 p = vUv;//(vUv * 2.0 - 1.0);
+varying vec3 vColor;
  
-  gl_FragColor = vec4(p.x, p.y, abs(sin(time* 0.01)), 1.0);
+void main(){
+    float r = vColor.r + cos(time/50.0);
+    float g = vColor.g + cos(time/60.0);
+    float b = vColor.b + cos(time/70.0);
+    gl_FragColor = vec4(r,g,b,1.0);
 }
 </textarea>
 </div>
