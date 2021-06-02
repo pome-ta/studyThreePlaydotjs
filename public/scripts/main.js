@@ -75,18 +75,15 @@ function init() {
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x444444);
   
-  // 座標軸を表示
-  const axes = new THREE.AxisHelper(8);
-  scene.add(axes);
+  const gridHelper = new THREE.GridHelper(128, 128);
+  scene.add(gridHelper);
+  //renderer.outputEncoding = THREE.sRGBEncoding;
   
   
   // カメラを作成
   const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e3);
-  //cam_set(camera);
-  camera.position.set(0, 0, 16);
+  camera.position.set(0, 0, 8);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
-  // ポジションリセット
-  //console.log(camera);
   
   
   // カメラコントローラーを作成
@@ -94,11 +91,12 @@ function init() {
   // 滑らかにカメラコントローラーを制御する
   controls.enableDamping = true;
   controls.dampingFactor = 0.2;
+  controls.target.y = 3;
+  
+  console.log(controls);
   
   
-  const gridHelper = new THREE.GridHelper(128, 128);
-  scene.add(gridHelper);
-  //renderer.outputEncoding = THREE.sRGBEncoding;
+  
   
   
   //const geometry = new THREE.PlaneGeometry(128, 64, 1, 1);
@@ -155,8 +153,7 @@ function init() {
   
   
   btnEle.addEventListener(tapStart, () => {
-    camera.position.set(0, 0, 16);
-    //cam_set(camera);
+    camera.position.set(0, 0, 8);
     material.fragmentShader = document.querySelector('#ed').value;
     triangle.material = material;
     material.needsUpdate = true;
@@ -170,15 +167,6 @@ function init() {
   tick();
   function tick() {
     controls.update();
-    
-    /*
-    if (mesh.material.fragmentShader === document.querySelector('#ed').value) {
-      console.log('きてる');
-    } else {
-      mesh.material.fragmentShader = document.querySelector('#ed').value;
-      material.needsUpdate = true;
-    }*/
-    
     // レンダリング
     time ++;
     uniforms.time.value = time;
