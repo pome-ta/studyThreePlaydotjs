@@ -85,7 +85,7 @@ function init() {
   
   // カメラを作成
   const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e3);
-  camera.position.set(0, 0, 8);
+  camera.position.set(0, 0, 64);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   
   
@@ -94,52 +94,21 @@ function init() {
   // 滑らかにカメラコントローラーを制御する
   controls.enableDamping = true;
   controls.dampingFactor = 0.2;
-  controls.target.y = 3;
+  controls.target.y = 16;
   
-  console.log(controls);
-  
-  
+  //console.log(controls);
   
   
   
-  //const geometry = new THREE.PlaneGeometry(128, 64, 1, 1);
+  
+  
+  const geometry = new THREE.PlaneGeometry(16, 16, 1, 1);
   
   //timeを設定
   const uniforms = {
     time: { type:'f', value: 0.0 }
   };
-  const positions = new Float32Array([
-     0.0,  1.0,  0.0,
-     1.0,  0.0,  0.0,
-    -2.5,  0.0,  0.0,
-  ]);
-    const colors = new Float32Array([
-    1.0,0.0,0.0,
-    0.0,0.0,1.0,
-    0.0,1.0,0.0,
-  ]);
-  const displacement = new Float32Array(3 * 3);
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  geometry.setAttribute('displacement', new THREE.BufferAttribute(displacement, 3));
   
-  
-  const material = new THREE.RawShaderMaterial({
-    vertexShader:vertexSource,
-    fragmentShader:fragmentSource,
-    uniforms:uniforms,
-    side:THREE.DoubleSide,
-  });
-  const triangle = new THREE.Mesh(geometry, material);
-  scene.add(triangle);
-    
-    
-    
- 
-  
-  
-  /*
   const material = new THREE.RawShaderMaterial({
     vertexShader: vertexSource,
     fragmentShader: fragmentSource,
@@ -152,7 +121,7 @@ function init() {
   
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
-  */
+  
   
   
   btnEle.addEventListener(tapStart, () => {
