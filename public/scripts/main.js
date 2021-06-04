@@ -65,6 +65,8 @@ function init() {
   const height = width * 0.8;
   let rot = 0;
   
+  const cSize = 64;
+  
   // レンダラ作成
   const canvasElement = document.querySelector('#myCanvas');
   const renderer = new THREE.WebGLRenderer({
@@ -85,7 +87,7 @@ function init() {
   
   // カメラを作成
   const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e3);
-  camera.position.set(0, 0, 64);
+  camera.position.set(0, cSize * 0.5, cSize*1.28);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
   
   
@@ -94,8 +96,8 @@ function init() {
   // 滑らかにカメラコントローラーを制御する
   controls.enableDamping = true;
   controls.dampingFactor = 0.2;
-  controls.target.y = 16;
-  controls.target.z = -16;
+  controls.target.y = cSize * 0.5;
+  //controls.target.z = -16;
   
   //console.log(controls);
   
@@ -103,7 +105,7 @@ function init() {
   
   
   
-  const geometry = new THREE.PlaneGeometry(16, 16, 1, 1);
+  const geometry = new THREE.PlaneGeometry(cSize, cSize, 1, 1);
   
   //timeを設定
   const uniforms = {
@@ -122,6 +124,8 @@ function init() {
   
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
+  mesh.position.y = cSize * 0.5;
+  console.log(mesh)
   
   
   
