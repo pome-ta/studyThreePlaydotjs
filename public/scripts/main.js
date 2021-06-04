@@ -95,6 +95,7 @@ function init() {
   controls.enableDamping = true;
   controls.dampingFactor = 0.2;
   controls.target.y = 16;
+  controls.target.z = -16;
   
   //console.log(controls);
   
