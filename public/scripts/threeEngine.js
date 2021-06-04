@@ -30,38 +30,32 @@ export default class ThreeEngine {
 
     // カメラ作成
     this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e3);
-
     this.camera.position.set(0, init_size * 1.28, 0);
-    // this.camera.rotation.x = -(90 * Math.PI / 180);
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    
 
     // カメラコントローラーを作成
     this.controls = new OrbitControls(this.camera, canvasElement);
     // 滑らかにカメラコントローラーを制御する
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.2;
-    // this.controls.target.y = init_size * 0.5;
-    // console.log(this.controls);
-    // this.controls.target.z = -(90 * (Math.PI / 180));
 
-    // this.camera.rotation.z = -(90 * (Math.PI / 180));
-
-    console.log(this.controls);
     this.geometry = new THREE.PlaneGeometry(init_size, init_size, 1, 1);
 
     this.material = new THREE.MeshNormalMaterial();
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.rotation.x = -(90* (Math.PI / 180)) ;
-    // this.mesh.position.y = init_size * 0.5;
     this.scene.add(this.mesh);
     this.tick = this.tick.bind(this);
   }
 
   run(main) {
     requestAnimationFrame(main.tick);
-    // this.tick();
-    // this.tick = this.tick.bind(this);
+  }
+  
+  resetCam(main, init_size) {
+    main.camera.position.set(0, init_size * 1.28, 0);
   }
 
   tick() {
@@ -70,7 +64,6 @@ export default class ThreeEngine {
     this.render.render(this.scene, this.camera);
     requestAnimationFrame(this.tick);
   }
-
 
 }
 

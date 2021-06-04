@@ -1,21 +1,32 @@
 import ThreeEngine from './threeEngine.js';
 
-const engine = new ThreeEngine(8);
-// engine.run();
-window.addEventListener('load', engine.run(engine));
-window.addEventListener('resize', onReSize);
+const engine = new ThreeEngine(16);
 
 function onReSize() {
   const body = document.querySelector('body');
   const width = Math.min(body.clientWidth, body.clientHeight);
   const height = width * 0.8;
-
   engine.render.setPixelRatio(window.devicePixelRatio);
   engine.render.setSize(width, height);
   engine.camera.aspect = width / height;
   engine.camera.updateProjectionMatrix();
-
 }
+
+function update(main, init_size) {
+  engine.resetCam(main, init_size);
+}
+
+window.addEventListener('load', engine.run(engine));
+window.addEventListener('resize', onReSize);
+
+const {tapStart, tapMove, tapEnd} = {
+  tapStart: typeof document.ontouchstart !== 'undefined' ? 'touchstart' : 'mousedown',
+  tapMove: typeof document.ontouchmove !== 'undefined' ? 'touchmove' : 'mousemove',
+  tapEnd: typeof document.ontouchend !== 'undefined' ? 'touchend' : 'mouseup',
+}
+
+const btn = document.querySelector('#btn');
+btn.addEventListener(tapStart, update(engine, 16));
 
 
 

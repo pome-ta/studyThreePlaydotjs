@@ -32,9 +32,3 @@ body {
 #btn:active {
   background-color: teal;
 }
-
-
-#ed {
-  width: 100%;
-  font-family: monospace;
-}

@@ -9,7 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/eruda@2.4.1/eruda.min.js"></script>
   <script>eruda.init();</script>
 
-  <script type="module" src="./scripts/main.js"></script>
+  <!--<script type="module" src="./scripts/main.js"></script>-->
 
   <title>Three test</title>
 </head>
@@ -17,20 +17,6 @@
 <div class="wrap">
   <canvas id="myCanvas"></canvas>
   <div id="btn"></div>
-<textarea id="ed" rows="24">
-#ifdef GL_ES
-precision highp float;
-#endif
-uniform float time;
-varying vec3 vColor;
- 
-void main(){
-    float r = vColor.r + cos(time/50.0);
-    float g = vColor.g + cos(time/60.0);
-    float b = vColor.b + cos(time/70.0);
-    gl_FragColor = vec4(r,g,b,1.0);
-}
-</textarea>
 </div>
 
 </body>
