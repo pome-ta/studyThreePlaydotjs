@@ -65,7 +65,7 @@ function init() {
   const height = width * 0.8;
   let rot = 0;
   
-  const cSize = 64;
+  const cSize = 16;
   
   // レンダラ作成
   const canvasElement = document.querySelector('#myCanvas');
@@ -78,7 +78,7 @@ function init() {
   
   // シーンを作成
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x444444);
+  scene.background = new THREE.Color(0x666666);
   
   const gridHelper = new THREE.GridHelper(128, 128);
   scene.add(gridHelper);
@@ -125,7 +125,7 @@ function init() {
   const mesh = new THREE.Mesh(geometry, material);
   scene.add(mesh);
   mesh.position.y = cSize * 0.5;
-  console.log(mesh)
+  //console.log(mesh)
   
   
   
