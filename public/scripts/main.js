@@ -7,7 +7,7 @@ const {tapStart, tapMove, tapEnd} = {
   tapEnd: typeof document.ontouchend !== 'undefined' ? 'touchend' : 'mouseup',
 }
 
-const init_size = 16;
+const init_size = 32;
 const engine = new ThreeEngine(init_size);
 
 function onReSize() {

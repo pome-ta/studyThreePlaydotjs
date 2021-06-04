@@ -4,34 +4,34 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/contro
 
 
 //バーテックスシェーダ
-const vertexShader =`
-  //精度の指定を追加
-  precision mediump float;
-
-  //positionの宣言
-  attribute vec3 position;
+const vertexSource =`
+//精度の指定を追加
+    precision mediump float;
+  
+    //positionの宣言
+    attribute vec3 position;
  
-  //uvの宣言
-  attribute vec2 uv;
+    //uvの宣言
+    attribute vec2 uv;
  
-  //projectionMatrixの宣言
-  uniform mat4 projectionMatrix;
+    //projectionMatrixの宣言
+    uniform mat4 projectionMatrix;
  
-  //modelViewMatrixの宣言
-  uniform mat4 modelViewMatrix;
-
-  varying vec2 vUv;
-
-  void main(){
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-
-    //フラグメントシェーダにuvを転送
-    vUv = uv;
-  }
+    //modelViewMatrixの宣言
+    uniform mat4 modelViewMatrix;
+  
+    varying vec2 vUv;
+  
+    void main(){
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+  
+        //フラグメントシェーダにuvを転送
+        vUv = uv;
+    }
 `;
 
 
-
+const fragmentSource = document.querySelector('#ed').value;
 
 export default class ThreeEngine {
   constructor(init_size) {
