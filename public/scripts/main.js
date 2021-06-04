@@ -1,6 +1,14 @@
 import ThreeEngine from './threeEngine.js';
 
-const engine = new ThreeEngine(16);
+
+const {tapStart, tapMove, tapEnd} = {
+  tapStart: typeof document.ontouchstart !== 'undefined' ? 'touchstart' : 'mousedown',
+  tapMove: typeof document.ontouchmove !== 'undefined' ? 'touchmove' : 'mousemove',
+  tapEnd: typeof document.ontouchend !== 'undefined' ? 'touchend' : 'mouseup',
+}
+
+const init_size = 16;
+const engine = new ThreeEngine(init_size);
 
 function onReSize() {
   const body = document.querySelector('body');
@@ -12,21 +20,17 @@ function onReSize() {
   engine.camera.updateProjectionMatrix();
 }
 
-function update(main, init_size) {
-  engine.resetCam(main, init_size);
-}
+
 
 window.addEventListener('load', engine.run(engine));
 window.addEventListener('resize', onReSize);
 
-const {tapStart, tapMove, tapEnd} = {
-  tapStart: typeof document.ontouchstart !== 'undefined' ? 'touchstart' : 'mousedown',
-  tapMove: typeof document.ontouchmove !== 'undefined' ? 'touchmove' : 'mousemove',
-  tapEnd: typeof document.ontouchend !== 'undefined' ? 'touchend' : 'mouseup',
-}
+
 
 const btn = document.querySelector('#btn');
-btn.addEventListener(tapStart, update(engine, 16));
+btn.addEventListener(tapStart, () => {
+  engine.camera.position.set(0, init_size * 1.28, 0);
+});
 
 
 

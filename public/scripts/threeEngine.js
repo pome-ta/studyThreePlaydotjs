@@ -3,6 +3,36 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/contro
 
 
 
+//バーテックスシェーダ
+const vertexShader =`
+  //精度の指定を追加
+  precision mediump float;
+
+  //positionの宣言
+  attribute vec3 position;
+ 
+  //uvの宣言
+  attribute vec2 uv;
+ 
+  //projectionMatrixの宣言
+  uniform mat4 projectionMatrix;
+ 
+  //modelViewMatrixの宣言
+  uniform mat4 modelViewMatrix;
+
+  varying vec2 vUv;
+
+  void main(){
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+
+    //フラグメントシェーダにuvを転送
+    vUv = uv;
+  }
+`;
+
+
+
+
 export default class ThreeEngine {
   constructor(init_size) {
     this.time = 0;
@@ -31,9 +61,10 @@ export default class ThreeEngine {
     // カメラ作成
     this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 1e3);
     this.camera.position.set(0, init_size * 1.28, 0);
+    // xxx: 180°回したい
+    //this.camera.rotation.x = -(90* (Math.PI / 180));
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
     
-
     // カメラコントローラーを作成
     this.controls = new OrbitControls(this.camera, canvasElement);
     // 滑らかにカメラコントローラーを制御する
@@ -41,11 +72,23 @@ export default class ThreeEngine {
     this.controls.dampingFactor = 0.2;
 
     this.geometry = new THREE.PlaneGeometry(init_size, init_size, 1, 1);
+    
+    //timeを設定
+    const uniforms = {
+      u_time: { type:'f', value: 0.0 }
+    };
 
-    this.material = new THREE.MeshNormalMaterial();
+    //this.material = new THREE.MeshNormalMaterial();
+    this.material = new THREE.RawShaderMaterial({
+      vertexShader: vertexSource,
+      fragmentShader: fragmentSource,
+      uniforms: uniforms,
+      side: THREE.FrontSide,
+      //wireframe: true
+    });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    this.mesh.rotation.x = -(90* (Math.PI / 180)) ;
+    this.mesh.rotation.x = -(90* (Math.PI / 180));
     this.scene.add(this.mesh);
     this.tick = this.tick.bind(this);
   }
@@ -53,14 +96,11 @@ export default class ThreeEngine {
   run(main) {
     requestAnimationFrame(main.tick);
   }
-  
-  resetCam(main, init_size) {
-    main.camera.position.set(0, init_size * 1.28, 0);
-  }
 
   tick() {
     this.controls.update();
     this.time++;
+    this.material.uniforms.u_time.value = this.time;
     this.render.render(this.scene, this.camera);
     requestAnimationFrame(this.tick);
   }
