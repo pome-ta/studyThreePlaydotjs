@@ -6,21 +6,17 @@ import { OrbitControls } from 'https://cdn.skypack.dev/three/examples/jsm/contro
 //バーテックスシェーダ
 const vertexSource =`
 //精度の指定を追加
-    precision mediump float;
-  
-    //positionの宣言
-    attribute vec3 position;
-        //projectionMatrixの宣言
-    uniform mat4 projectionMatrix;
-    //modelViewMatrixの宣言
-    uniform mat4 modelViewMatrix;
+precision mediump float;
+//positionの宣言
+attribute vec3 position;
+//projectionMatrixの宣言
+uniform mat4 projectionMatrix;
+//modelViewMatrixの宣言
+uniform mat4 modelViewMatrix;
     
-    void main() { 
-            gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-         }
- 
-    
- 
+void main() { 
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+}
 `;
 
 
@@ -67,7 +63,6 @@ export default class ThreeEngine {
 
     this.geometry = new THREE.PlaneGeometry(init_size, init_size, 1, 1);
     
-    //timeを設定
     const uniforms = {
       u_time: { type:'f', value: 0.0 },
       u_resolution: { type: "v2", value: new THREE.Vector2()}
@@ -82,7 +77,6 @@ export default class ThreeEngine {
       fragmentShader: fragmentSource,
       uniforms: uniforms,
       side: THREE.FrontSide,
-      //wireframe: true
     });
 
     this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -100,7 +94,6 @@ export default class ThreeEngine {
     let nowTime = 0;
     nowTime = (Date.now() - this.time) / 1000;
     this.material.uniforms.u_time.value = nowTime;
-    //this.time = up_time;
     this.render.render(this.scene, this.camera);
     requestAnimationFrame(this.tick);
   }
