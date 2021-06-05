@@ -15,11 +15,8 @@ const vertexSource =`
     //modelViewMatrixの宣言
     uniform mat4 modelViewMatrix;
     
-    varying vec2 vUv;
-    
     void main() { 
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-              //gl_Position = vec4( position, 1.0 );
          }
  
     
@@ -31,7 +28,7 @@ const fragmentSource = document.querySelector('#ed').value;
 
 export default class ThreeEngine {
   constructor(init_size) {
-    this.time = 0;
+    this.time = new Date();
     this.rot = 0;
 
     const body = document.querySelector('body');
@@ -100,8 +97,10 @@ export default class ThreeEngine {
 
   tick() {
     this.controls.update();
-    this.time++;
-    this.material.uniforms.u_time.value = this.time;
+    let nowTime = 0;
+    nowTime = (Date.now() - this.time) / 1000;
+    this.material.uniforms.u_time.value = nowTime;
+    //this.time = up_time;
     this.render.render(this.scene, this.camera);
     requestAnimationFrame(this.tick);
   }
