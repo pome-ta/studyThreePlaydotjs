@@ -10,24 +10,20 @@ const vertexSource =`
   
     //positionの宣言
     attribute vec3 position;
- 
-    //uvの宣言
-    attribute vec2 uv;
- 
-    //projectionMatrixの宣言
+        //projectionMatrixの宣言
     uniform mat4 projectionMatrix;
- 
     //modelViewMatrixの宣言
     uniform mat4 modelViewMatrix;
-  
+    
     varying vec2 vUv;
-  
-    void main(){
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-  
-        //フラグメントシェーダにuvを転送
-        vUv = uv;
-    }
+    
+    void main() { 
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+              //gl_Position = vec4( position, 1.0 );
+         }
+ 
+    
+ 
 `;
 
 
@@ -51,6 +47,7 @@ export default class ThreeEngine {
     });
     this.render.setPixelRatio(window.devicePixelRatio);
     this.render.setSize(width, height);
+    //console.log(this.render);
 
     // シーン作成
     this.scene = new THREE.Scene();
@@ -75,8 +72,12 @@ export default class ThreeEngine {
     
     //timeを設定
     const uniforms = {
-      u_time: { type:'f', value: 0.0 }
+      u_time: { type:'f', value: 0.0 },
+      u_resolution: { type: "v2", value: new THREE.Vector2()}
     };
+  uniforms.u_resolution.value.x = this.render.domElement.width;
+    uniforms.u_resolution.value.y = this.render.domElement.height;
+    
 
     //this.material = new THREE.MeshNormalMaterial();
     this.material = new THREE.RawShaderMaterial({
