@@ -21,6 +21,9 @@ function onReSize() {
 }
 
 
+function update() {
+  engine.camera.position.set(0, init_size * 1.28, 0);
+}
 
 window.addEventListener('load', engine.run(engine));
 window.addEventListener('resize', onReSize);
@@ -28,9 +31,7 @@ window.addEventListener('resize', onReSize);
 
 
 const btn = document.querySelector('#btn');
-btn.addEventListener(tapStart, () => {
-  engine.camera.position.set(0, init_size * 1.28, 0);
-});
+btn.addEventListener(tapStart, update);
 
 
 
