@@ -20,7 +20,21 @@ void main() {
 `;
 
 
-const fragmentSource = document.querySelector('#ed').value;
+const fragmentSource = `
+precision mediump float;
+
+uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+  vec2 st = gl_FragCoord.xy / u_resolution;
+  gl_FragColor = vec4(st.x, st.y, abs(sin(u_time)), 1.0);
+}
+
+`;
+
+
+//const fragmentSource = document.querySelector('#ed').value;
 
 export default class ThreeEngine {
   constructor(init_size) {
@@ -29,7 +43,7 @@ export default class ThreeEngine {
 
     const body = document.querySelector('body');
     const width = Math.min(body.clientWidth, body.clientHeight);
-    const height = width * 0.32;
+    const height = width * 0.88;
 
     const canvasElement = document.querySelector('#myCanvas');
 
