@@ -13,7 +13,7 @@ const engine = new ThreeEngine(init_size);
 function onReSize() {
   const body = document.querySelector('body');
   const width = Math.min(body.clientWidth, body.clientHeight);
-  const height = width * 0.64;
+  const height = width * 0.32;
   engine.render.setPixelRatio(window.devicePixelRatio);
   engine.render.setSize(width, height);
   engine.camera.aspect = width / height;

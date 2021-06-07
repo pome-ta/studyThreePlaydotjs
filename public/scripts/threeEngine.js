@@ -13,8 +13,8 @@ attribute vec3 position;
 uniform mat4 projectionMatrix;
 //modelViewMatrixの宣言
 uniform mat4 modelViewMatrix;
-    
-void main() { 
+
+void main() {
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
 }
 `;
@@ -29,7 +29,7 @@ export default class ThreeEngine {
 
     const body = document.querySelector('body');
     const width = Math.min(body.clientWidth, body.clientHeight);
-    const height = width * 0.8;
+    const height = width * 0.32;
 
     const canvasElement = document.querySelector('#myCanvas');
 
@@ -54,7 +54,7 @@ export default class ThreeEngine {
     // xxx: 180°回したい
     //this.camera.rotation.x = -(90* (Math.PI / 180));
     this.camera.lookAt(new THREE.Vector3(0, 0, 0));
-    
+
     // カメラコントローラーを作成
     this.controls = new OrbitControls(this.camera, canvasElement);
     // 滑らかにカメラコントローラーを制御する
@@ -62,14 +62,14 @@ export default class ThreeEngine {
     this.controls.dampingFactor = 0.2;
 
     this.geometry = new THREE.PlaneGeometry(init_size, init_size, 1, 1);
-    
+
     const uniforms = {
       u_time: { type:'f', value: 0.0 },
       u_resolution: { type: "v2", value: new THREE.Vector2()}
     };
   uniforms.u_resolution.value.x = this.render.domElement.width;
     uniforms.u_resolution.value.y = this.render.domElement.height;
-    
+
 
     //this.material = new THREE.MeshNormalMaterial();
     this.material = new THREE.RawShaderMaterial({
