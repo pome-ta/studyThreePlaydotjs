@@ -12,10 +12,10 @@ body {
   overflow: hidden;
 }
 
-
+/*
 #myCanvas {
   display: none;
-}
+} */
 
 
 
@@ -29,25 +29,26 @@ body {
   height: 100%;
   overflow: hidden;
   font-family: monospace;
-  background-color: rgba(255, 0, 0, 0.1); 
-}
-
-.wrap {
-  display: none;
-}
-
-
-#btn {
-  display: none;
-  
+  background-color: rgba(255, 0, 0, 0.1);
 }
 
 /*
 .wrap {
+  display: none;
+}
+#btn {
+  display: none;
+} */
+
+
+
+
+.wrap {
+  z-index: -1;
   height: 100%;
   display: flex;
   flex-direction: column;
-  
+
   align-items: center;
 }
 
@@ -58,13 +59,10 @@ body {
   height: 2rem;
   width: 100%;
   margin: 1rem 0;
-  
+
 }
 
 #btn:active {
   background-color: teal;
 }
 
-
-
-*/
